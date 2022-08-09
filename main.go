@@ -78,7 +78,6 @@ func main() {
 		id, _ := strconv.Atoi(c.Param("id"))
 
 		var task Task
-		// pertanyaan => cara handle error kalau nggak nemu data
 		err := db.QueryRow("SELECT * FROM tasks where id = ?", id).Scan(&task.ID, &task.Detail, &task.Assignee, &task.DueDate, &task.IsDone)
 		if err != nil {
 			panic(err.Error()) // proper error handling instead of panic in your app
@@ -151,7 +150,6 @@ func main() {
 		})
 	})
 
-	// pertanyaan => cara render html
 	r.SetFuncMap(template.FuncMap{
 		"upper": strings.ToUpper,
 		"inc": func(i int) int {
@@ -196,7 +194,6 @@ func main() {
 		id, _ := strconv.Atoi(c.Param("id"))
 
 		var task Task
-		// pertanyaan => cara handle error kalau nggak nemu data
 		sqlStatement := fmt.Sprintf("SELECT * FROM tasks where id = %d", id)
 		err := db.QueryRow(sqlStatement).Scan(&task.ID, &task.Detail, &task.Assignee, &task.DueDate, &task.IsDone)
 		if err != nil {
