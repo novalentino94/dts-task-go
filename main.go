@@ -18,7 +18,7 @@ import (
 func main() {
 	// Open database connection
 	// db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/dts-go")
-	db, err := sql.Open("postgres", "postgresql://postgres:admin@localhost:5432/dts-task-go?sslmode=disable")
+	db, err := sql.Open("postgres", "postgresql://lgrkhsrnqvheta:60f66899372dc0342a5f04cb1c44a6274ad7b8ce4a7808901cdc4c8c899dc455@ec2-54-225-234-165.compute-1.amazonaws.com/d9dqhb00i76kr5")
 
 	// if there is an error opening the connection, handle it
 	if err != nil {
