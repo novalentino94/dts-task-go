@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Go Edit Task</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+        <link rel="stylesheet" href="../assets/stylesheet.css">
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="../assets/edit.js"></script>
+        <script>
+            var taskId = {{ .id }};
+        </script>
+    </head>
+
+    <body>
+        <div style="margin:30px">
+            <a onclick="location.href='/'" style="cursor:pointer"><i class="fa fa-chevron-left"></i> Back</a>
+            <h1 style="margin-bottom:30px;">Task Edit</h1>
+            <form id="create-task">
+                <div style="margin-bottom:10px">
+                    <label><small>Detail Task <span style="color: red;">*</span></small></label>
+                    <div>
+                        <textarea type="text" name="detail" id="detail" required>{{ .detail }}</textarea>
+                    </div>
+                </div>
+                <div style="margin-bottom:10px">
+                    <label><small>Assignee<span style="color: red;">*</span></small></label>
+                    <div>
+                        <input type="text" name="assignee" id="assignee" value="{{ .assignee }}" required/>
+                    </div>
+                </div>
+                <div style="margin-bottom:10px">
+                    <label><small>Due Date<span style="color: red;">*</span></small></label>
+                    <div>
+                        <input type="date" name="dueDate" id="dueDate" value="{{ .dueDate }}" required/>
+                    </div>
+                </div>
+                <button style="margin-top:10px;padding:10px 20px" type="submit">Simpan</button>
+            </form>
+        </div>
+    </body>
+</html>

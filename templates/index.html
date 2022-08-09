@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Go Task</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" href="assets/stylesheet.css">
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+        <script src="assets/home.js"></script>
+    </head>
+
+    <body>
+        <div style="margin:30px">
+            <h1 style="margin-bottom:30px;">Task List</h1>
+            <div style="float:right;margin-bottom:20px">
+                <button style="padding:10px 20px;background-color: rgb(135, 177, 240);border:none" onclick="location.href='/create'">+ Create Task</button>
+            </div>
+            <table id="tasks" class="display" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Task</th>
+                        <th>Assignee</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tasks-body">
+                    {{ range $i, $e := .tasks }}
+                        <tr 
+                            {{ if .IsDone }}
+                                style="background-color:#68f28f"
+                            {{ end }} >
+                            <td>{{ inc $i }}</td>
+                            <td>{{ .Detail}}</td>
+                            <td>{{ .Assignee }}</td>
+                            <td>{{ .DueDate }}</td>
+                            <td>
+                                {{ if .IsDone }}
+                                    Done
+                                {{ else }}
+                                    On Progress
+                                {{ end }}
+                            </td>
+                            <td>
+                                {{ if not .IsDone }}
+                                    <button onclick="location.href = '/edit/{{ .ID }}'" style="padding:5px 10px;background-color:#f5bc6c;border:none">Edit</button>
+                                    <button onclick="changeStatusDone({{ .ID }})" style="padding:5px 10px;background-color:#68f28f;border:none">Done</button>
+                                {{ end }}
+                            </td>
+                        </tr>
+                    {{ end }}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>No.</th>
+                        <th>Task</th>
+                        <th>Assignee</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </body>
+</html>
