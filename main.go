@@ -12,11 +12,13 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/lib/pq"
 )
 
 func main() {
 	// Open database connection
-	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/dts-go")
+	// db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/dts-go")
+	db, err := sql.Open("postgres", "postgresql://postgres:admin@localhost:5432/dts-task-go?sslmode=disable")
 
 	// if there is an error opening the connection, handle it
 	if err != nil {
@@ -26,11 +28,11 @@ func main() {
 	defer db.Close()
 
 	type Task struct {
-		ID       int    `json:"id"`
-		Detail   string `json:"detail"`
-		Assignee string `json:"assignee"`
-		DueDate  string `json:"dueDate"`
-		IsDone   bool   `json:"isDone"`
+		ID       int       `json:"id"`
+		Detail   string    `json:"detail"`
+		Assignee string    `json:"assignee"`
+		DueDate  time.Time `json:"dueDate"`
+		IsDone   bool      `json:"isDone"`
 	}
 
 	r := gin.Default()
@@ -135,7 +137,7 @@ func main() {
 	r.PATCH("/task/:id", func(c *gin.Context) {
 		id, _ := strconv.Atoi(c.Param("id"))
 
-		theSql := fmt.Sprintf("UPDATE tasks SET isDone = 1 WHERE id = %d", id)
+		theSql := fmt.Sprintf("UPDATE tasks SET isDone = true WHERE id = %d", id)
 		task, err := db.Query(theSql)
 		// if there is an error inserting, handle it
 		if err != nil {
@@ -154,6 +156,9 @@ func main() {
 		"upper": strings.ToUpper,
 		"inc": func(i int) int {
 			return i + 1
+		},
+		"formatDate": func(date time.Time) string {
+			return date.Format("2006-01-02")
 		},
 	})
 
@@ -192,7 +197,8 @@ func main() {
 
 		var task Task
 		// pertanyaan => cara handle error kalau nggak nemu data
-		err := db.QueryRow("SELECT * FROM tasks where id = ?", id).Scan(&task.ID, &task.Detail, &task.Assignee, &task.DueDate, &task.IsDone)
+		sqlStatement := fmt.Sprintf("SELECT * FROM tasks where id = %d", id)
+		err := db.QueryRow(sqlStatement).Scan(&task.ID, &task.Detail, &task.Assignee, &task.DueDate, &task.IsDone)
 		if err != nil {
 			panic(err.Error()) // proper error handling instead of panic in your app
 		}
@@ -201,7 +207,7 @@ func main() {
 			"id":       task.ID,
 			"detail":   task.Detail,
 			"assignee": task.Assignee,
-			"dueDate":  task.DueDate,
+			"dueDate":  task.DueDate.Format("2006-01-02"),
 		})
 	})
 

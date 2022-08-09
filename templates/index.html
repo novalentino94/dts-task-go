@@ -39,7 +39,7 @@
                             <td>{{ inc $i }}</td>
                             <td>{{ .Detail}}</td>
                             <td>{{ .Assignee }}</td>
-                            <td>{{ .DueDate }}</td>
+                            <td>{{ formatDate .DueDate }}</td>
                             <td>
                                 {{ if .IsDone }}
                                     Done
