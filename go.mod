@@ -1,4 +1,4 @@
-module dts-go
+module dts-task-go
 
 go 1.18
 
